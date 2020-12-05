@@ -1,0 +1,3 @@
+pyswisseph==2.8.0.post1
+pytz==2020.1
+kerykeion==0.0.3.2
