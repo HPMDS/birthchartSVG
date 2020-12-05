@@ -24,7 +24,7 @@ it's very easy to use.
 SVG generated successfully!
 
 ```
-![alt text](https://raw.githubusercontent.com/g-battaglia/birthchartSVG/main/birthchartSVG/template/sample.svg)
+![alt text](https://raw.githubusercontent.com/g-battaglia/birthchartSVG/master/birthchartSVG/data/template/sample.svg)
 
 ## Documentation
 
