@@ -15,7 +15,7 @@ it's very easy to use.
 >>> kanye = br.MakeInstance("Kanye", 1977, 6, 8, 8, 45, "Atlanta")
 
 # Set the output directory for the SVG:
->>> kanye.set_dir("/Users/{YourName}")
+>>> kanye.set_dir = "/Users/{YourName}"
 
 #Generate the SVG:
 >>> kanye.makeSVG()
