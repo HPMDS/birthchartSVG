@@ -169,6 +169,7 @@ class MakeInstance:
         """ 
         Generates the SVG file.
         """
+        self.SVGname = self.name
         self.type = "Natal"
         #empty element points
         self.fire=0.0
@@ -224,6 +225,10 @@ class MakeInstance:
         self.c1=0
         self.c2=36
         self.c3=120
+
+        # Start templating
+
+        td['chartname'] = self.SVGname
     
         td['transitRing']=""
         td['degreeRing']=self.degreeRing( r )
@@ -245,8 +250,9 @@ class MakeInstance:
         td['viewbox'] = viewbox
         td['stringTitle'] = self.name
         
-        # Tipo di carta    
-        td['stringName'] = f"Tipo: {self.charttype}"
+        # Tipo di carta   
+        self.subtitle = "Personal information:"
+        td['stringName'] = self.subtitle
         
         #bottom left
 
@@ -312,7 +318,10 @@ class MakeInstance:
         td['stringLat']="%s: %s" %(self.label['latitude'],self.lat2str(self.geolat))
         td['stringLon']="%s: %s" %(self.label['longitude'],self.lon2str(self.geolon))
         
-        td['stringPosition']= "Dettaglio"
+
+        # Set a detail string:
+        self.detail = "Detail"
+        td['stringPosition']= self.detail
 
         #paper_color_X
         td['paper_color_0']=self.colors["paper_0"]

@@ -22,7 +22,7 @@
 
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="$svgWidth" height="$svgHeight"
  viewBox="$viewbox" preserveAspectRatio="xMidYMid">
-<title>Kerykeion, lo scetro di Hermes</title>
+<title>Birtchart for $chartname</title>
 
 <g transform="translate($cfgTranslate)">
 <g transform="rotate($cfgRotate)">
