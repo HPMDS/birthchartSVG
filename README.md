@@ -1,6 +1,6 @@
 # birthchartSVG
 
-Birthchart SVG is a chart generator based on Kerykeion and Opeanstro.
+Birthchart SVG is a chart generator based on Kerykeion and Openastro.
 Like the titles says it prints out SVG file of the birthchart,
 it's very easy to use.
 
