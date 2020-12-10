@@ -12,6 +12,7 @@ it's very easy to use.
 >>> import birthchartSVG as br
 
 # Make the instance:
+# Arguments: "Name", year, month, day, local hour, minuts, "city", nat=nation)
 >>> kanye = br.MakeInstance("Kanye", 1977, 6, 8, 8, 45, "Atlanta")
 
 # Set the output directory for the SVG:
