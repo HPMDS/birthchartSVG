@@ -20,7 +20,7 @@ from xml.dom.minidom import parseString
 DEBUG = False
 
 #directories
-DATADIR=os.path.dirname(__file__)
+DATADIR = os.path.dirname(__file__)
 
 
 
@@ -47,14 +47,22 @@ class MakeInstance:
         self.user.get_all()
         
         # Open files:
-
-        mainset = os.path.join(DATADIR, "data/settings/mainSettings.json")
+        
+        mainset = os.path.join(DATADIR, "data/settings/label.json")
         with open(mainset, "r") as settings:
-            config = json.load(settings)
+            self.label = json.load(settings)
 
-        colorset = os.path.join(DATADIR, "data/settings/getColors.json")
+        colorset = os.path.join(DATADIR, "data/settings/colors.json")
         with open(colorset, "r") as settings:
-            getColors = json.load(settings)
+            self.colors = json.load(settings)
+
+        aspset = os.path.join(DATADIR, "data/settings/settingsAspect.json")
+        with open(aspset, "r") as settings:
+            self.aspects = json.load(settings) 
+
+        planset = os.path.join(DATADIR, "data/settings/settingsPlanet.json")
+        with open(planset, "r") as settings:
+            self.planets_asp = json.load(settings)
 
 
 
@@ -108,9 +116,6 @@ class MakeInstance:
 
 
         
-        #get label configuration 
-        self.label = config
-
         #check for home
         self.home_location = self.user.city
         self.home_geolat = self.user.city_lat
@@ -159,9 +164,6 @@ class MakeInstance:
         self.zodiac_short = ['Ari','Tau','Gem','Cnc','Leo','Vir','Lib','Sco','Sgr','Cap','Aqr','Psc']
         self.zodiac_color = ['#482900','#6b3d00','#5995e7','#2b4972','#c54100','#2b286f','#69acf1','#ffd237','#ff7200','#863c00','#4f0377','#6cbfff']
         self.zodiac_element = ['fire','earth','air','water','fire','earth','air','water','fire','earth','air','water']
-
-        #get color configuration
-        self.colors = getColors
         
         return
     
@@ -176,19 +178,6 @@ class MakeInstance:
         self.earth=0.0
         self.air=0.0
         self.water=0.0
-            
-        #get planet settings    
-        aspset = os.path.join(DATADIR, "data/settings/getSettingsAspect.json")
-        with open(aspset, "r") as settings:
-            getSettingsAspect = json.load(settings) 
-
-        planset = os.path.join(DATADIR, "data/settings/getSettingsPlanet.json")
-        with open(planset, "r") as settings:
-            getSettingsPlanet = json.load(settings)
-
-        self.planets_asp = getSettingsPlanet
-
-        self.aspects = getSettingsAspect
 
 
         #grab normal module data
@@ -353,24 +342,21 @@ class MakeInstance:
         td['makePlanetGrid'] = self.makePlanetGrid()
         td['makeHousesGrid'] = self.makeHousesGrid()
         
-        #read template
-        self.xml_svg = os.path.join(DATADIR, 'data/template/kerykeionSVG-svg.xml')
-        f = open(self.xml_svg)
 
-        template = Template(f.read()).substitute(td)
-        f.close()
+        # Read template
+
+        self.xml_svg = os.path.join(DATADIR, 'data/template/kerykeionSVG-svg.xml')
+        with open(self.xml_svg, "r") as f:
+            template = Template(f.read()).substitute(td)
         
-        #Write template
-        
-        #Create chart file
+        #Write template and create chart file
 
         self.chartname = os.path.join(self.set_dir, f'{self.name}Chart.svg')
+        with open(self.chartname,"w") as f:
+            dprint("Creating SVG: lat = "+str(self.geolat)+' lon = '+str(self.geolon)+' loc = '+self.location) 
+            f.write(template)
 
-        f = open(self.chartname,"w")
-        dprint("Creating SVG: lat="+str(self.geolat)+' lon='+str(self.geolon)+' loc='+self.location)
         
-        f.write(template)
-        f.close()
         print("SVG generated successfully!")
         return 
 
@@ -1035,4 +1021,5 @@ def dprint(str):
 if __name__ == "__main__":
     # Generate the SVG
     kanye = MakeInstance("Kanye", 1977, 6, 8, 8, 45, "Atlanta", nat="USA")
-    kanye.makeSVG()
+    kanye.set_dir = os.path.expanduser("~")
+    kanye.makeSVG() 
