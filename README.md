@@ -1,7 +1,7 @@
 # birthchartSVG
 
 Birthchart SVG is a chart generator based on Kerykeion and Openastro.
-Like the titles says it prints out SVG file of the birthchart,
+Like the titles says it prints out SVG file of a kerykeion object,
 it's very easy to use.
 
 ```python
@@ -10,21 +10,24 @@ it's very easy to use.
 
 #Import:
 >>> import birthchartSVG as br
+>>> import kerykeion as kr
 
 # Make the instance:
 # Arguments: "Name", year, month, day, local hour, minuts, "city", nat=nation)
->>> kanye = br.MakeInstance("Kanye", 1977, 6, 8, 8, 45, "Atlanta")
+>>> kanye = kr.Calculator("Kanye", 1977, 6, 8, 8, 45, "Atlanta")
+>>> kanyeSVG = kanye
 
 # Set the output directory for the SVG:
->>> kanye.set_dir = "/Users/{YourName}"
+>>> kanyeSVG.set_dir = "/Users/{YourName}"
 
 #Generate the SVG:
->>> kanye.makeSVG()
+>>> kanyeSVG.makeSVG()
 
 
 SVG generated successfully!
 
 ```
+
 ![alt text](https://raw.githubusercontent.com/g-battaglia/birthchartSVG/master/birthchartSVG/data/template/sample.svg)
 
 ## Documentation
@@ -34,10 +37,8 @@ The file generated has the name you inserted followed by Chart.svg
 
 ## Installation
 
-BirtchartSVG is Python 3 package, make sure you have Python 3 installed on your system. 
-
+BirtchartSVG is Python 3 package, make sure you have Python 3 installed on your system.
 
 ## Development
 
-You can clone this repository or download a zip file using the right side buttons. 
-
+You can clone this repository or download a zip file using the right side buttons.

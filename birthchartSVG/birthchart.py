@@ -7,8 +7,6 @@ A big part of this packege is based on Openastro.
 """
 #basics
 import math, os.path, datetime, pytz, json
-import kerykeion as kr
-import swisseph as swe
 
 #template processing
 from string import Template
@@ -34,7 +32,7 @@ class MakeInstance:
     (ex: IT) 
     """
 
-    def __init__(self, name, year, month, day, hours, minutes, city, nat=""):
+    def __init__(self, kerykeion_objcet):
         dprint("-------------------------------")
         dprint('Birthchart SVG aka KerykeionSVG\n')
         dprint("-------------------------------")  
@@ -43,9 +41,13 @@ class MakeInstance:
         self.set_dir = os.path.expanduser("~")
 
         # Kerykeion instance
-        self.user = kr.Calculator(name, year, month, day, hours, minutes, city, nat)
-        self.user.get_all()
+        self.user = kerykeion_objcet
         
+        try:
+            self.user.sun
+        except:
+            self.user.get_all()
+
         # Open files:
         
         mainset = os.path.join(DATADIR, "data/settings/label.json")
@@ -1019,7 +1021,10 @@ def dprint(str):
 
 
 if __name__ == "__main__":
+    import kerykeion as kr
+
     # Generate the SVG
-    kanye = MakeInstance("Kanye", 1977, 6, 8, 8, 45, "Atlanta", nat="USA")
-    kanye.set_dir = os.path.expanduser("~")
-    kanye.makeSVG() 
+    kanye = kr.Calculator("Kanye", 1977, 6, 8, 8, 45, "Atlanta", nat="USA")
+    kanyeSVG = MakeInstance(kanye)
+    kanyeSVG.set_dir = os.path.expanduser("~")
+    kanyeSVG.makeSVG() 
