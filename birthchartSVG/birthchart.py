@@ -6,7 +6,7 @@ for kerykeion in github.
 A big part of this packege is based on Openastro.
 """
 #basics
-import math, sys, os.path, datetime, socket, gettext, codecs, webbrowser, pytz, json
+import math, os.path, datetime, pytz, json
 import kerykeion as kr
 import swisseph as swe
 
@@ -1010,7 +1010,7 @@ class MakeInstance:
 
 #debug print function
 def dprint(str):
-    if "--debug" in sys.argv or DEBUG:
+    if DEBUG:
         print('%s' % str)
 
 
