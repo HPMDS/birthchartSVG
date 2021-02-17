@@ -9,7 +9,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="birthchartSVG", # Replace with your own username
-    version="1.0.2",
+    version="1.0.2.0",
     author="Giacomo Battaglia",
     author_email="battaglia.giacomo@yahoo.it",
     description="Birthchart SVG generator for astrology.",
