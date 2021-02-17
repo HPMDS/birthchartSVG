@@ -12,10 +12,12 @@ it's very easy to use.
 >>> import birthchartSVG as br
 >>> import kerykeion as kr
 
-# Make the instance:
+# Generate a kerykeion:
 # Arguments: "Name", year, month, day, local hour, minuts, "city", nat=nation)
 >>> kanye = kr.Calculator("Kanye", 1977, 6, 8, 8, 45, "Atlanta")
->>> kanyeSVG = kanye
+
+# Pass the the kerykeion object and make the instance:
+>>> kanyeSVG = br.MakeInstance(kanye)
 
 # Set the output directory for the SVG:
 >>> kanyeSVG.set_dir = "/Users/{YourName}"
