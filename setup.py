@@ -9,7 +9,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="birthchartSVG", # Replace with your own username
-    version="1.0.0.1",
+    version="1.1.0",
     author="Giacomo Battaglia",
     author_email="battaglia.giacomo@yahoo.it",
     description="Birthchart SVG generator for astrology.",
@@ -24,5 +24,5 @@ setuptools.setup(
     ],
     include_package_data=True,
     python_requires='>=3.6',
-    install_requires = ['pyswisseph', 'pytz', 'kerykeion'],
+    install_requires = ['kerykeion'],
 )

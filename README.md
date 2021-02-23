@@ -24,7 +24,8 @@ it's very easy to use.
 SVG generated successfully!
 
 ```
-![alt text](https://raw.githubusercontent.com/g-battaglia/birthchartSVG/master/birthchartSVG/data/template/sample.svg)
+
+![alt text](https://raw.githubusercontent.com/g-battaglia/birthchartSVG/master/birthchartSVG/template/sample.svg)
 
 ## Documentation
 
@@ -33,10 +34,8 @@ The file generated has the name you inserted followed by Chart.svg
 
 ## Installation
 
-BirtchartSVG is Python 3 package, make sure you have Python 3 installed on your system. 
-
+BirtchartSVG is Python 3 package, make sure you have Python 3 installed on your system.
 
 ## Development
 
-You can clone this repository or download a zip file using the right side buttons. 
-
+You can clone this repository or download a zip file using the right side buttons.

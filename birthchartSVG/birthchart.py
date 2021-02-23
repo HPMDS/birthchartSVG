@@ -6,9 +6,9 @@ for kerykeion in github.
 A big part of this packege is based on Openastro.
 """
 #basics
-import math, sys, os.path, datetime, socket, gettext, codecs, webbrowser, pytz, json
+import chart_settings
+import math, sys, os.path, datetime, pytz, json
 import kerykeion as kr
-import swisseph as swe
 
 #template processing
 from string import Template
@@ -48,13 +48,6 @@ class MakeInstance:
         
         # Open files:
 
-        mainset = os.path.join(DATADIR, "data/settings/mainSettings.json")
-        with open(mainset, "r") as settings:
-            config = json.load(settings)
-
-        colorset = os.path.join(DATADIR, "data/settings/getColors.json")
-        with open(colorset, "r") as settings:
-            getColors = json.load(settings)
 
 
 
@@ -108,8 +101,7 @@ class MakeInstance:
 
 
         
-        #get label configuration 
-        self.label = config
+        
 
         #check for home
         self.home_location = self.user.city
@@ -160,8 +152,6 @@ class MakeInstance:
         self.zodiac_color = ['#482900','#6b3d00','#5995e7','#2b4972','#c54100','#2b286f','#69acf1','#ffd237','#ff7200','#863c00','#4f0377','#6cbfff']
         self.zodiac_element = ['fire','earth','air','water','fire','earth','air','water','fire','earth','air','water']
 
-        #get color configuration
-        self.colors = getColors
         
         return
     
@@ -177,18 +167,11 @@ class MakeInstance:
         self.air=0.0
         self.water=0.0
             
-        #get planet settings    
-        aspset = os.path.join(DATADIR, "data/settings/getSettingsAspect.json")
-        with open(aspset, "r") as settings:
-            getSettingsAspect = json.load(settings) 
 
-        planset = os.path.join(DATADIR, "data/settings/getSettingsPlanet.json")
-        with open(planset, "r") as settings:
-            getSettingsPlanet = json.load(settings)
-
-        self.planets_asp = getSettingsPlanet
-
-        self.aspects = getSettingsAspect
+        self.planets_asp = chart_settings.planets
+        self.aspects = chart_settings.aspects
+        self.label = chart_settings.main
+        self.colors = chart_settings.colors
 
 
         #grab normal module data
@@ -354,7 +337,7 @@ class MakeInstance:
         td['makeHousesGrid'] = self.makeHousesGrid()
         
         #read template
-        self.xml_svg = os.path.join(DATADIR, 'data/template/kerykeionSVG-svg.xml')
+        self.xml_svg = os.path.join(DATADIR, 'template/kerykeionSVG-svg.xml')
         f = open(self.xml_svg)
 
         template = Template(f.read()).substitute(td)
