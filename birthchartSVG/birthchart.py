@@ -6,9 +6,9 @@ for kerykeion in github.
 A big part of this packege is based on Openastro.
 """
 #basics
-import chart_settings
-import math, sys, os.path, datetime, pytz, json
+import math, sys, os.path, datetime, socket, gettext, codecs, webbrowser, pytz, json
 import kerykeion as kr
+import swisseph as swe
 
 #template processing
 from string import Template
@@ -17,7 +17,7 @@ from string import Template
 from xml.dom.minidom import parseString
 
 #debug
-DEBUG = False
+DEBUG = True
 
 #directories
 DATADIR=os.path.dirname(__file__)
@@ -40,7 +40,7 @@ class MakeInstance:
         dprint("-------------------------------")  
 
         # Set output directory.
-        self.set_dir = os.path.expanduser("~")
+        self.set_dir = None#os.path.expanduser("~")
 
         # Kerykeion instance
         self.user = kr.Calculator(name, year, month, day, hours, minutes, city, nat)
@@ -48,6 +48,14 @@ class MakeInstance:
         
         # Open files:
 
+        mainset = os.path.join(DATADIR, "data/settings/mainSettings.json")
+        with open(mainset, "r") as settings:
+            config = json.load(settings)
+            dprint(f'config: {config}')
+
+        colorset = os.path.join(DATADIR, "data/settings/getColors.json")
+        with open(colorset, "r") as settings:
+            getColors = json.load(settings)
 
 
 
@@ -101,7 +109,9 @@ class MakeInstance:
 
 
         
-        
+        #get label configuration 
+        self.label = config
+        dprint(f'Label: {self.label}')
 
         #check for home
         self.home_location = self.user.city
@@ -152,10 +162,12 @@ class MakeInstance:
         self.zodiac_color = ['#482900','#6b3d00','#5995e7','#2b4972','#c54100','#2b286f','#69acf1','#ffd237','#ff7200','#863c00','#4f0377','#6cbfff']
         self.zodiac_element = ['fire','earth','air','water','fire','earth','air','water','fire','earth','air','water']
 
+        #get color configuration
+        self.colors = getColors
         
         return
     
-    def makeSVG(self):
+    def makeSVG(self,name):
         """ 
         Generates the SVG file.
         """
@@ -167,11 +179,18 @@ class MakeInstance:
         self.air=0.0
         self.water=0.0
             
+        #get planet settings    
+        aspset = os.path.join(DATADIR, "data/settings/getSettingsAspect.json")
+        with open(aspset, "r") as settings:
+            getSettingsAspect = json.load(settings) 
 
-        self.planets_asp = chart_settings.planets
-        self.aspects = chart_settings.aspects
-        self.label = chart_settings.main
-        self.colors = chart_settings.colors
+        planset = os.path.join(DATADIR, "data/settings/getSettingsPlanet.json")
+        with open(planset, "r") as settings:
+            getSettingsPlanet = json.load(settings)
+
+        self.planets_asp = getSettingsPlanet
+
+        self.aspects = getSettingsAspect
 
 
         #grab normal module data
@@ -297,9 +316,9 @@ class MakeInstance:
         else:
             td['stringLocation']=self.location
             
-        td['stringDateTime']= str(self.user.year)+'-%(#1)02d-%(#2)02d %(#3)02d:%(#4)02d:%(#5)02d' % {'#1':self.user.month,'#2':self.user.day,'#3':self.user.hours,'#4':self.user.minuts,'#5':00} + self.decTzStr(self.timezone)
-        td['stringLat']="%s: %s" %(self.label['latitude'],self.lat2str(self.geolat))
-        td['stringLon']="%s: %s" %(self.label['longitude'],self.lon2str(self.geolon))
+        td['stringDateTime']='{0:04}-{1:02}-{2:02} {3:02}:{4:02}:{5:02}'.format(self.user.year,self.user.month,self.user.day,self.user.hours,self.user.minuts,00) + self.decTzStr(self.timezone)
+        td['stringLat']="{}: {}".format(self.label['latitude'],self.lat2str(self.geolat))#.encode('utf-8') # modificado!!!
+        td['stringLon']="{}: {}".format(self.label['longitude'],self.lon2str(self.geolon))#.encode('utf-8') # modificado!!!
         
 
         # Set a detail string:
@@ -337,7 +356,7 @@ class MakeInstance:
         td['makeHousesGrid'] = self.makeHousesGrid()
         
         #read template
-        self.xml_svg = os.path.join(DATADIR, 'template/kerykeionSVG-svg.xml')
+        self.xml_svg = os.path.join(DATADIR, 'data/template/kerykeionSVG-svg.xml')
         f = open(self.xml_svg)
 
         template = Template(f.read()).substitute(td)
@@ -347,7 +366,9 @@ class MakeInstance:
         
         #Create chart file
 
-        self.chartname = os.path.join(self.set_dir, f'{self.name}Chart.svg')
+        self.chartname = os.path.join(name, f'{self.name}Chart.svg')
+
+        print('chartname:',self.chartname)
 
         f = open(self.chartname,"w")
         dprint("Creating SVG: lat="+str(self.geolat)+' lon='+str(self.geolon)+' loc='+self.location)
@@ -355,7 +376,7 @@ class MakeInstance:
         f.write(template)
         f.close()
         print("SVG generated successfully!")
-        return 
+        return self.chartname
 
     #draw transit ring
     def transitRing(self, r ):
@@ -405,7 +426,7 @@ class MakeInstance:
         deg = int(coord)
         min = int( (float(coord) - deg) * 60 )
         sec = int( round( float( ( (float(coord) - deg) * 60 ) - min) * 60.0 ) )
-        return "%s°%s'%s\" %s" % (deg,min,sec,sign)
+        return "%s\xc2\xba %s'%s\" %s" % (deg,min,sec,sign)
         
     def lon2str( self, coord ):
         sign=self.label["east"]
@@ -415,7 +436,7 @@ class MakeInstance:
         deg = int(coord)
         min = int( (float(coord) - deg) * 60 )
         sec = int( round( float( ( (float(coord) - deg) * 60 ) - min) * 60.0 ) )
-        return "%s°%s'%s\" %s" % (deg,min,sec,sign)
+        return "%s\xc2\xba %s'%s\" %s" % (deg,min,sec,sign)
     
     #decimal hour to minutes and seconds
     def decHour( self , input ):
