@@ -405,7 +405,7 @@ class MakeInstance:
         deg = int(coord)
         min = int( (float(coord) - deg) * 60 )
         sec = int( round( float( ( (float(coord) - deg) * 60 ) - min) * 60.0 ) )
-        return "%s°%s'%s\" %s" % (deg,min,sec,sign)
+        return "%s\xc2\xba%s'%s\" %s" % (deg,min,sec,sign)
         
     def lon2str( self, coord ):
         sign=self.label["east"]
@@ -415,7 +415,7 @@ class MakeInstance:
         deg = int(coord)
         min = int( (float(coord) - deg) * 60 )
         sec = int( round( float( ( (float(coord) - deg) * 60 ) - min) * 60.0 ) )
-        return "%s°%s'%s\" %s" % (deg,min,sec,sign)
+        return "%s\xc2\xba%s'%s\" %s" % (deg,min,sec,sign)
     
     #decimal hour to minutes and seconds
     def decHour( self , input ):
